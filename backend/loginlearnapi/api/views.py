@@ -3,12 +3,94 @@ from rest_framework import generics, viewsets, response
 from .serializers import *
 from .models import *
 from rest_framework.views import APIView
+from rest_framework.exceptions import AuthenticationFailed
+import jwt, datetime
+from loginlearnapi.settings import JWT_SECRET
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 # Create your views here.
+def get_user_from_auth_header(request):
+  token = request.headers['Authorization']
+  token = token.split()[1]
+  
+  if not token:
+    raise AuthenticationFailed('unauthnenticated request')  
+  user_details = jwt.decode(token, JWT_SECRET, algorithms='HS256')
+  try:
+    user = User.objects.filter(id=user_details['user_id']).first()
+  except Exception as e:
+    raise AuthenticationFailed('internal server error')
+  if not user:
+    raise AuthenticationFailed('invalid token')
+  return user
 
+def get_tokens_for_user(user):
+  refresh = RefreshToken.for_user(user)
+  
+  if not refresh:
+    raise AuthenticationFailed("Authentication failed.")
+
+  return {
+    'refresh': str(refresh),
+    'access': str(refresh.access_token),
+  }
+
+class SignupView(APIView):  
+  def post(self, request):
+    serializer = UserSerializer(data=request.data)
+    try:
+      if serializer.is_valid():
+        user = serializer.save()
+        print(user)
+        return Response(get_tokens_for_user(user=user))
+      else:
+        return response.Response({"errors": serializer.errors})    
+    
+    except Exception as e:
+      print(e)
+      return response.Response({"msg": "error occured"})
+
+class LoginView(APIView):
+  def post(self, request):
+    provided_username = request.data['username']
+    provided_password = request.data['password']
+    
+    user = User.objects.filter(username=provided_username).first()
+    if user is None:
+      raise AuthenticationFailed("User not found")
+    if not user.check_password(provided_password):
+      raise AuthenticationFailed("Incorrect Password")
+    
+    return Response(get_tokens_for_user(user))
+
+class UserView(APIView):
+  def get(self, request):
+    user = get_user_from_auth_header(request=request)
+    return Response(UserSerializer(user).data)
+
+class LogoutView(APIView):
+  def get(self, request):
+    token = request.headers['Authorization']
+    token = token.split()[1]
+    if not token:
+      raise AuthenticationFailed('unauthnenticated request')
+    
+    # res.delete_cookie(key='token')
+    #since we're using jwt, there's no logging out as such on the backend. 
+    #on the frontend, have to delete that token from the localStorage. 
+    return Response({"detail" :"you're logged out"})
+
+#for a user to access their containers. 
 class ContainerListView(generics.ListAPIView):
-  queryset = Container.objects.all()
-  serializer_class = ContainerSerializer
-
+  # queryset = Container.objects.all()
+  # serializer_class = ContainerSerializer
+  
+  def get(self, request):
+    user = get_user_from_auth_header(request=request)
+    containers = Container.objects.all().filter(user=user.pk)
+    serializer = ContainerSerializer(containers, many=True)
+    return Response(serializer.data)
+    
 # class ContainerListView(APIView):
 #   def get(self, request):
 #         containers = Container.objects.all()

@@ -1,4 +1,7 @@
+'use client';
 import React from "react";
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -10,9 +13,60 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import axios from 'axios'
+import { FormEvent } from "react";
+import { BACKEND_URL } from "@/lib/utils";
+import { ENDPOINTS } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { useAuthContext } from "../context/useAuthContext";
 
 
-export default function LoginPage() {
+
+export default function SignupPage() {
+  const router = useRouter();
+  const {login} = useAuthContext();
+
+  const SignupSchema = Yup.object().shape({
+    username: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+    email: Yup.string().email('Invalid email').required('Required'),
+    password: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), undefined], 'Passwords don\'t match')
+      .required('Required')
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    },
+    onSubmit: async (values) => {
+      // alert(JSON.stringify(values, null, 2));
+      const response = await axios.post(
+        BACKEND_URL+ENDPOINTS.signup, 
+        values, 
+        {withCredentials: true}
+      );
+      console.log(response.data);
+      if (response.data['access']) {
+        login(response.data['access']);
+        localStorage.setItem('refreshToken', response.data['refresh']);
+        router.push('/journal');
+      } else {
+        alert(response.data);
+      }
+
+    },
+    validationSchema: SignupSchema
+  });
 
   return(
     <div className="h-full">
@@ -24,36 +78,63 @@ export default function LoginPage() {
               <CardDescription>Use this journal to track quests.</CardDescription>
             </CardHeader>
             
-            <CardContent>
-              <form>
+            <form onSubmit={formik.handleSubmit}>
+              <CardContent>
                 <div className="grid w-full items-center gap-4">
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="name">Username</Label>
-                    <Input id="name" placeholder="Username..." />
+                    <Label htmlFor="username">Username</Label>
+                    <Input 
+                    onChange={formik.handleChange}
+                    value={formik.values.username}
+                    id="username" placeholder="Username..." />
+                    {formik.errors.username && formik.touched.username ? (
+                      <div className="text-red-500 text-sm">{formik.errors.username}</div>
+                    ) : null}
                   </div>
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="name">Email</Label>
-                    <Input id="name" placeholder="Email..." />
+                    <Label htmlFor="email">Email</Label>
+                    <Input 
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
+                    id="email" placeholder="Email..." />
+                    {formik.errors.email && formik.touched.email ? (
+                      <div className="text-red-500 text-sm">{formik.errors.email}</div>
+                    ) : null}
                   </div>
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="framework">Password</Label>
-                    <Input id="password" placeholder="Password..." type="password" />
+                    <Label htmlFor="password">Password</Label>
+                    <Input 
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
+                    id="password" placeholder="Password..." type="password" />
+                    {formik.errors.password && formik.touched.password ? (
+                      <div className="text-red-500 text-sm">{formik.errors.password}</div>
+                    ) : null}
                   </div>
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="framework">Confirm Password</Label>
-                    <Input id="password" placeholder="Confirm Password..." type="password" />
+                    <Label htmlFor="confirmPassword">Confirm Password</Label>
+                    <Input 
+                    onChange={formik.handleChange}
+                    value={formik.values.confirmPassword}
+                    id="confirmPassword" placeholder="Confirm Password..." type="password" />
+                    {formik.errors.confirmPassword && formik.touched.confirmPassword ? (
+                      <div className="text-red-500 text-sm">{formik.errors.confirmPassword}</div>
+                    ) : null}
                   </div>
-                </div>
-              </form>
-            </CardContent>
+                </div>              
+              </CardContent>
+
+              <CardFooter className="flex justify-between">
+                <Button variant="outline">I have an Account</Button>
+                <Button type="submit">Signup</Button>
+              </CardFooter>
+
+            </form>
+
             
-            <CardFooter className="flex justify-between">
-              <Button variant="outline">I have an Account</Button>
-              <Button>Signup</Button>
-            </CardFooter>
           </Card>
 
       </div>
     </div>
-  )
+  );
 }

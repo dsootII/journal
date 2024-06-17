@@ -6,16 +6,39 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { DropdownMenuDemo } from "./ContainerDropdown"
+
+interface Entry {
+  id: number;
+  title: string;
+  body: string;
+  created_at: string;
+  updated_at: string;
+  user: number;
+  container: number;
+}
+
+interface Container {
+  name: string;
+  entries: Entry[];
+}
+
+interface ContainerDetailProps {
+  selectedContainer: Container;
+}
+
+export default function ContainerDetail({ selectedContainer }: ContainerDetailProps) {
 
 
-export default function ContainerDetail() {
 
   return (
-    <div >
-      <Card className="hover:bg-slate-200">
+    <div className="h-1/6" >
+      <Card className="bg-stone-400 hover:bg-stone-600 h-full rounded-none">
         <CardHeader>
-          <CardTitle>Container Name</CardTitle>
-          <CardDescription>Container description</CardDescription>
+          <CardTitle>
+            {selectedContainer.name}
+          </CardTitle>
+          <CardDescription>No. of entries: {selectedContainer.entries.length}</CardDescription>
         </CardHeader>
       </Card>
     </div>
