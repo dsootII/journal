@@ -22,9 +22,12 @@ const AuthContext = createContext<AuthContextProps>({
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const router = useRouter();
+  console.log('AuthProvider entered');
+  // debugger;
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
+    console.log('auth context useEffect entered.')
     if (token) {
       setAccessToken(token);
     }

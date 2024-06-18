@@ -14,8 +14,15 @@ export default function JournalPage() {
 
   const router = useRouter();
   const [userDetails, setUserDetails] = useState({});
+  
 
   const { isAuthenticated, accessToken } = useAuthContext();
+  if (accessToken) {
+    console.log('user details decoded from token outside useEffect', jwtDecode(accessToken));
+  }
+
+
+  console.log("Shit received on journal's page.tsx", isAuthenticated, accessToken);
   useEffect( () => {
     if (!isAuthenticated) {
       alert("You're not logged in");
@@ -23,6 +30,7 @@ export default function JournalPage() {
     } else {
       if(accessToken) {
         const userDetailsDecoded = jwtDecode(accessToken);
+        console.log("user details received from decoding token", userDetailsDecoded);
         setUserDetails(userDetailsDecoded);
       } else {
         console.log("how did it come to this");
