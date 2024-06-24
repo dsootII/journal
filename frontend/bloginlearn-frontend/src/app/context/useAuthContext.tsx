@@ -26,9 +26,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [userDetails, setUserDetails] = useState({});
   const router = useRouter();
+  console.log('AuthProvider entered');
+  // debugger;
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
+    console.log('auth context useEffect entered.')
     if (token) {
       setAccessToken(token);
       setUserDetails(jwtDecode(token));
