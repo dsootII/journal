@@ -33,10 +33,11 @@ type Containers = Container[];
 interface EntryListProps {
   setSelectedContainer: Dispatch<SetStateAction<number>>,
   selectedContainer: Container
+  containerList: Containers
 }
 
 
-export default function EntryList ({setSelectedContainer, selectedContainer}: EntryListProps) {
+export default function EntryList ({setSelectedContainer, selectedContainer, containerList}: EntryListProps) {
 
 
   //gotta make the UI reactive after this. Actually the auth context itself should have all details ready
@@ -53,7 +54,7 @@ export default function EntryList ({setSelectedContainer, selectedContainer}: En
           <CardTitle>
             <div className="flex justify-between px-2 items-center">
               <h3>Entries</h3>
-              <DropdownMenuDemo>
+              <DropdownMenuDemo containerList={containerList} setSelectedContainer={setSelectedContainer}>
                 Containers  
               </DropdownMenuDemo>    
             </div>
@@ -66,12 +67,16 @@ export default function EntryList ({setSelectedContainer, selectedContainer}: En
             {
               selectedContainer.entries.map((entry) => {
                 return (
-                  <Card className = "bg-stone-200 my-2 hover:shadow-lg hover:bg-stone-300">
+                  <Card 
+                    className = "bg-stone-200 my-2 hover:shadow-lg hover:bg-stone-300" 
+                    key={entry.id}
+                    
+                  >
                     <CardHeader>
-                      <CardTitle className="text-lg">Entry 1</CardTitle>
+                      <CardTitle className="text-lg">{entry.title}</CardTitle>
                     </CardHeader>
-                    <CardContent> {entry.title} </CardContent>
-                    <CardFooter>Created on {entry.created_at}</CardFooter>
+                    <CardContent className="overflow-hidedn"> {entry.body} </CardContent>
+                    <CardFooter className="text-sm font-extralight">Created on {entry.created_at.slice(0,10)}</CardFooter>
                   </Card>
                 )
               })

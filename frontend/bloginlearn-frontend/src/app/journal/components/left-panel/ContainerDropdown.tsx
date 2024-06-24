@@ -17,8 +17,11 @@ import {
 import { BACKEND_URL, ENDPOINTS } from "@/lib/utils"
 import axios from "axios"
 import { error } from "console"
+import { title } from "process"
 import React, { useEffect, useState } from "react"
 import { ReactNode } from "react"
+import { SetStateAction } from "react";
+import { Dispatch } from "react";
 
 
 interface Entry {
@@ -40,27 +43,15 @@ interface Container {
 // Define the type for the array of containers
 type Containers = Container[];
 
-export const DropdownMenuDemo: React.FC<{ children: ReactNode }> = ({children}) => {
-  const {accessToken} = useAuthContext();
-  const [containerList, setContainerList] = useState<Containers>([]);
+export const DropdownMenuDemo: React.FC<{ 
+  containerList: Containers,
+  setSelectedContainer: Dispatch<SetStateAction<number>>, 
+  children: ReactNode 
+}> = ({containerList, setSelectedContainer, children}) => {
+  //receive containerList from LeftPanel. thoda propdrilling chalega. 
+  //no useEffect required here. That's stupid. 
 
-  useEffect(() => {
-    axios.get(
-      BACKEND_URL+ENDPOINTS.listContainers, 
-      {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        },
-      })
-    .then(res => {
-      console.log(res);
-      setContainerList(res.data);
-    })
-    .catch(error => {
-      console.log(error);
-    }) 
-  }, [])
+
 
   const menuItems:any = [];
 
@@ -72,15 +63,16 @@ export const DropdownMenuDemo: React.FC<{ children: ReactNode }> = ({children}) 
       <DropdownMenuContent className="w-56">
 
         {
-          containerList.map(container => {
+          containerList.map((container, index) => {
             return( 
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                  {container.name}
+            <DropdownMenuGroup key={container.name}>
+              <DropdownMenuItem onClick={() => setSelectedContainer(index)}>
+                {container.name}
               </DropdownMenuItem>
             </DropdownMenuGroup>
           )})
         }
+
       </DropdownMenuContent>
     </DropdownMenu>
   )

@@ -13,30 +13,22 @@ import { jwtDecode } from "jwt-decode";
 export default function JournalPage() {
 
   const router = useRouter();
-  const [userDetails, setUserDetails] = useState({});
 
-  const { isAuthenticated, accessToken } = useAuthContext();
+  const { isAuthenticated, accessToken, userDetails } = useAuthContext();
   useEffect( () => {
     if (!isAuthenticated) {
       alert("You're not logged in");
       router.push('/login');
-    } else {
-      if(accessToken) {
-        const userDetailsDecoded = jwtDecode(accessToken);
-        setUserDetails(userDetailsDecoded);
-      } else {
-        console.log("how did it come to this");
-        debugger;
-      }
-      
     }
   }, []);
+
+  
 
   return (
     <div className="flex w-screen h-screen bg-stone-100">
 
       <div className="w-1/3">
-        <LeftPanel userDetails={userDetails}/>
+        <LeftPanel />
       </div>
 
       <div className="w-2/3 flex flex-col">

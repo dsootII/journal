@@ -29,12 +29,13 @@ type Containers = Container[];
 
 
 
-export default function LeftPanel({userDetails}: any) {
+export default function LeftPanel() {
 
-  const username = userDetails.username;
+  const [loading, setLoading] = useState(true);
   const {accessToken} = useAuthContext();
   const [containerList, setContainerList] = useState<Containers>([]);
   const [selectedContainer, setSelectedContainer] = useState(0);
+  
 
 
   useEffect(() => {
@@ -47,8 +48,11 @@ export default function LeftPanel({userDetails}: any) {
         },
       })
     .then(res => {
-      console.log(res);
-      setContainerList(res.data);;
+      console.log("logging axios response in leftPanel useEffect", res);
+      if (res.data) {
+        setContainerList(res.data);
+        setLoading(false);
+      }
     })
     .catch(error => {
       console.log(error);
@@ -60,8 +64,20 @@ export default function LeftPanel({userDetails}: any) {
   return (
     <div className='flex flex-col h-screen'>
       
-      <ContainerDetail selectedContainer={containerList[selectedContainer]} />      
-      <EntryList setSelectedContainer={setSelectedContainer} selectedContainer={containerList[selectedContainer]}/>
+      {
+        loading ? 
+        <div>Loading, please wait...</div> :
+        <>
+          <ContainerDetail selectedContainer={containerList[selectedContainer]} />      
+          <EntryList 
+            setSelectedContainer={setSelectedContainer} 
+            selectedContainer={containerList[selectedContainer]}
+            containerList={containerList}  
+          />
+        </>
+
+      }
+      
 
     </div>
   )

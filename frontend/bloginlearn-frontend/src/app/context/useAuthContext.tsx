@@ -1,6 +1,7 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import { jwtDecode } from "jwt-decode";
 
 // Define the shape of the context value
 interface AuthContextProps {
@@ -8,6 +9,7 @@ interface AuthContextProps {
   accessToken: string | null;
   login: (token: string) => void;
   logout: () => void;
+  userDetails: {}
 }
 
 // Create the context with a default value
@@ -16,17 +18,20 @@ const AuthContext = createContext<AuthContextProps>({
   accessToken: null,
   login: () => {},
   logout: () => {},
+  userDetails: {}
 });
 
 // Define the provider component
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [userDetails, setUserDetails] = useState({});
   const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if (token) {
       setAccessToken(token);
+      setUserDetails(jwtDecode(token));
     }
   }, []);
 
@@ -45,7 +50,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const isAuthenticated = !!accessToken;
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, accessToken, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, accessToken, login, logout, userDetails }}>
       {children}
     </AuthContext.Provider>
   );
