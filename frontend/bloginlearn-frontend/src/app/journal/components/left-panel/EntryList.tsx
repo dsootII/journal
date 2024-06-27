@@ -10,25 +10,7 @@ import { DropdownMenu } from "@radix-ui/react-dropdown-menu"
 import { DropdownMenuDemo } from "./ContainerDropdown"
 import { SetStateAction } from "react";
 import { Dispatch } from "react";
-
-interface Entry {
-  id: number;
-  title: string;
-  body: string;
-  created_at: string;
-  updated_at: string;
-  user: number;
-  container: number;
-}
-
-// Define the type for the main container which includes a name and entries
-interface Container {
-  name: string;
-  entries: Entry[];
-}
-
-// Define the type for the array of containers
-type Containers = Container[];
+import { useJournalContext } from "@/app/context/JournalContext";
 
 interface EntryListProps {
   setSelectedContainer: Dispatch<SetStateAction<number>>,
@@ -36,16 +18,21 @@ interface EntryListProps {
   containerList: Containers
 }
 
+export default function EntryList () {
 
-export default function EntryList ({setSelectedContainer, selectedContainer, containerList}: EntryListProps) {
+  const {
+    setSelectedContainer, 
+    selectedContainer, 
+    containerList,
+    setCurrentThought,
+    setCurrentThoughtTitle
+  } = useJournalContext();
 
+  function handleEntryClick(entry: Entry) {
+    setCurrentThought(entry.body);
+    setCurrentThoughtTitle(entry.title);
+  }
 
-  //gotta make the UI reactive after this. Actually the auth context itself should have all details ready
-  //which can be stored in redux state.
-  //yeah, now this is the shit we gotta be doing. 
-
-
-  //testing with dummy entries for now, direct hardcoding
 
   return (
     <div className="h-5/6 flex flex-col ">
@@ -70,7 +57,7 @@ export default function EntryList ({setSelectedContainer, selectedContainer, con
                   <Card 
                     className = "bg-stone-200 my-2 hover:shadow-lg hover:bg-stone-300" 
                     key={entry.id}
-                    
+                    onClick={() => handleEntryClick(entry)}
                   >
                     <CardHeader>
                       <CardTitle className="text-lg">{entry.title}</CardTitle>

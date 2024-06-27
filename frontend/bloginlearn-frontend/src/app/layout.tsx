@@ -16,11 +16,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  debugger;
   return (
     <AuthProvider>
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    
+        <html lang="en">
+          <body className={inter.className}>{children}</body>
+        </html>
+      
     </AuthProvider>
   );
 }

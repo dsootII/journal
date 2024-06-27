@@ -15,5 +15,6 @@ export const ENDPOINTS = {
   createContainers: "createcontainer/",
   obtainTokens: "token/",
   refreshToken: 'token/refresh/',
-  verifyToken: 'token/verify/'
+  verifyToken: 'token/verify/',
+  createEntry: 'entries/create/'
 }

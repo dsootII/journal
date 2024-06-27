@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { DropdownMenuDemo } from "./ContainerDropdown"
+import { useJournalContext } from "@/app/context/JournalContext";
 
 interface Entry {
   id: number;
@@ -27,9 +28,9 @@ interface ContainerDetailProps {
   selectedContainer: Container;
 }
 
-export default function ContainerDetail({ selectedContainer }: ContainerDetailProps) {
+export default function ContainerDetail() {
 
-
+  const { selectedContainer } = useJournalContext();
 
   return (
     <div className="h-1/6" >
