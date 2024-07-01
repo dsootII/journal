@@ -8,6 +8,7 @@ import jwt, datetime
 from loginlearnapi.settings import JWT_SECRET
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from rest_framework.permissions import AllowAny
 # Create your views here.
 def get_user_from_auth_header(request):
   token = request.headers['Authorization']
@@ -66,7 +67,11 @@ class LoginView(APIView):
 class UserView(APIView):
   def get(self, request):
     user = get_user_from_auth_header(request=request)
-    return Response(UserSerializer(user).data)
+    containers = Container.objects.filter(user=user)
+    return Response({
+      "user": UserSerializer(user).data,
+      "containers": ContainerSerializer(containers, many=True).data
+    })
 
 class LogoutView(APIView):
   def get(self, request):
@@ -112,4 +117,5 @@ class ContainerCreateView(generics.CreateAPIView):
 class EntryViewSet(viewsets.ModelViewSet):
   queryset = Entry.objects.all()
   serializer_class = EntrySerializer
+  permission_classes = [AllowAny]
 

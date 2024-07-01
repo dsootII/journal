@@ -30,7 +30,7 @@ class ContainerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Container
-        fields = ['name', 'entries']
+        fields = ['id', 'name', 'entries']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

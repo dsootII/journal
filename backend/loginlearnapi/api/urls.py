@@ -10,10 +10,11 @@ app_name = 'api'
 router = DefaultRouter()
 router.register(r'entries', EntryViewSet, basename='entry')
 
-urlpatterns = [
+urlpatterns = router.urls
+
+urlpatterns += [
   path('listcontainers/', ContainerListView.as_view(), name='container-list'),
   path('createcontainer/', ContainerCreateView.as_view(), name='create-container'),
-  path('', include(router.urls)),
   path('signup/', SignupView.as_view(), name='signup'),
   path('login/', LoginView.as_view(), name='login'),
   path('user/', UserView.as_view(), name='user-detail'),
@@ -22,4 +23,4 @@ urlpatterns = [
   path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
   path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
   
-]
+]         

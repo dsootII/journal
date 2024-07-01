@@ -5,10 +5,11 @@ import { useJournalContext } from "@/app/context/JournalContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL, ENDPOINTS } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 
 export default function Entry () {
-
+  const router = useRouter();
   const [dbCallData, setDbCallData] = useState({});
   const { 
     currentThought, 
@@ -19,7 +20,7 @@ export default function Entry () {
   } = useJournalContext();
 
   useEffect( () => {
-    axios.put(BACKEND_URL+ENDPOINTS.createEntry, dbCallData)
+    axios.post(BACKEND_URL+ENDPOINTS.createEntry, dbCallData)
     .then(res => {
       console.log(res)
     })
@@ -36,14 +37,14 @@ export default function Entry () {
     const data = {
       title: currentThoughtTitle,
       body: currentThought,
-      container: selectedContainer
+      container: selectedContainer.id
     }
-    setDbCallData(data)
+    setDbCallData(data);
+    router.refresh();
   }
 
   function handlePerish() {
     let alertMessage = "Are you sure?"
-    alert(alertMessage);
     if (confirm(alertMessage)) {
       setCurrentThought('');
       setCurrentThoughtTitle('');

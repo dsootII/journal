@@ -16,5 +16,5 @@ export const ENDPOINTS = {
   obtainTokens: "token/",
   refreshToken: 'token/refresh/',
   verifyToken: 'token/verify/',
-  createEntry: 'entries/create/'
+  createEntry: 'entries/'
 }

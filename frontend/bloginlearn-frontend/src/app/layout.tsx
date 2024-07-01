@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import '@radix-ui/themes/styles.css';
+import { Theme,ThemePanel  } from '@radix-ui/themes';
 import "./globals.css";
 import { AuthProvider } from './context/useAuthContext';
 
@@ -18,12 +20,14 @@ export default function RootLayout({
 }>) {
   debugger;
   return (
-    <AuthProvider>
-    
-        <html lang="en">
-          <body className={inter.className}>{children}</body>
-        </html>
-      
-    </AuthProvider>
+    <html lang="en">
+      <body className={inter.className}>
+        <Theme>
+          <AuthProvider>            
+            {children}
+          </AuthProvider>
+        </Theme>
+      </body>
+    </html>
   );
 }

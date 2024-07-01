@@ -9,6 +9,7 @@ interface Entry {
 }
 
 interface Container {
+  id: number;
   name: string;
   entries: Entry[];
 }

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 export default function ToolBar() {
 
   //for now turning this into an entry for title. 
-  const {currentThoughtTitle} = useJournalContext();
+  const {currentThoughtTitle, setCurrentThoughtTitle} = useJournalContext();
 
   return (
     <div className="flex justify-between pt-2 pb-1 bg-stone-300">
@@ -16,6 +16,7 @@ export default function ToolBar() {
         className="font-bold"
         placeholder="You can give a title if you want.."
         value={currentThoughtTitle}
+        onChange={(e) => setCurrentThoughtTitle(e.target.value)}
       />
 
     </div>

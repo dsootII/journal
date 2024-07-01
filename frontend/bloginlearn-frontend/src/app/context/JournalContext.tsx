@@ -18,6 +18,7 @@ interface JournalContextValues {
 }
 
 const defaultContainerValue: Container = {
+  id: 0,
   name: "Default Container",
   entries: []
 }
