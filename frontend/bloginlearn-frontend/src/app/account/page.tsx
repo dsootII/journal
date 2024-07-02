@@ -1,9 +1,12 @@
 'use client';
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { UserProvider, useUserContext } from '../context/UserContext'
-import { Card, Flex, Table, Text } from '@radix-ui/themes';
+import { Button, Card, Flex, Table, Text } from '@radix-ui/themes';
 import * as Tabs from '@radix-ui/react-tabs';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
+import * as Dialog from '@radix-ui/react-dialog';
+import { Label } from '@radix-ui/react-label';
+import { Input } from '@/components/ui/input';
 
 export default function Page() {
   
@@ -11,9 +14,32 @@ export default function Page() {
     <UserProvider>
       <AccountPage />   
     </UserProvider>
-  )
+  ) 
+}
 
-  
+function Modal () {
+
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger asChild>
+        <Button>+ Add Container</Button>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay forceMount/>
+        <Dialog.Content>
+          <Dialog.Title>Add Container</Dialog.Title>
+          <Dialog.Description>
+            Enter a name for your container.
+          </Dialog.Description>
+          <Label>Name:</Label>
+          <Input placeholder='container name...'/>
+          <Dialog.Close asChild>
+            <Button>Save</Button>
+          </Dialog.Close>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  )
 }
 
 function AccountPage () {
@@ -21,6 +47,13 @@ function AccountPage () {
   const userDetails = useUserContext();
   console.log("user details acc page", userDetails);
   const {user, containers} = userDetails;
+  const [newContainerName, setNewContainerName] = useState('');
+  const [isModalOn, setIsModalOn] = useState(false);
+
+
+  function handleAddContainer () {
+    setIsModalOn(!isModalOn);
+  }
 
   return (
     <Flex gap={"3"}>
@@ -34,6 +67,7 @@ function AccountPage () {
         }
       </Card>
       <Card>
+        <Modal />
         <Tabs.Root>
           <Tabs.List>
             {
