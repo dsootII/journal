@@ -117,7 +117,7 @@ function AccountPage () {
   }
 
   return (
-    <Flex gap={"3"}>
+    <Flex gap={"3"} direction={'column'}>
       <Card>
         {
           Object.entries(user).map(
@@ -129,6 +129,7 @@ function AccountPage () {
       </Card>
       <Card>
       <Button onClick={() => setIsModalOn(true)}>+ Add Container</Button>
+      <Button color='ruby' className='mx-2'>Delete Selected Container</Button>
       <Modal 
         isModalOn={isModalOn} 
         handleModalOpening={handleModalOpening}
@@ -139,7 +140,11 @@ function AccountPage () {
           <Tabs.List>
             {
               containers.map(container => (
-                <Tabs.Trigger key={container.id} value={container.name}>
+                <Tabs.Trigger 
+                  key={container.id} 
+                  value={container.name}
+                  className="px-2 py-1 rounded-lg mt-1 data-[state=active]:bg-blue-500 data-[state=active]:text-white hover:bg-blue-300 hover:text-white"
+                >
                   {container.name}{' '}({container.entries.length})
                 </Tabs.Trigger>
               ))
@@ -164,6 +169,7 @@ function AccountPage () {
                   </ScrollArea.Scrollbar>
                   <ScrollArea.Corner />
                 </ScrollArea.Root>
+                
               </Tabs.Content>
             ))
           }
