@@ -57,6 +57,7 @@ class LoginView(APIView):
     provided_password = request.data['password']
     
     user = User.objects.filter(username=provided_username).first()
+    print("user found ", user);
     if user is None:
       raise AuthenticationFailed("User not found")
     if not user.check_password(provided_password):
@@ -111,6 +112,7 @@ class ContainerListView(generics.ListAPIView):
 #           return response.Response(serializer.errors)
   
 class ContainerCreateView(generics.CreateAPIView):
+  print('container create view entered')
   queryset = Container.objects.all()
   serializer_class = ContainerSerializer
   

@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { UserProvider, useUserContext } from '../context/UserContext'
 import { Button, Card, Flex, Table, Text } from '@radix-ui/themes';
 import * as Tabs from '@radix-ui/react-tabs';
@@ -7,6 +7,10 @@ import * as ScrollArea from '@radix-ui/react-scroll-area';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Label } from '@radix-ui/react-label';
 import { Input } from '@/components/ui/input';
+import { stat } from 'fs';
+import axios from 'axios';
+import { BACKEND_URL, ENDPOINTS } from '@/lib/utils';
+import { useAuthContext } from '../context/useAuthContext';
 
 export default function Page() {
   
@@ -17,29 +21,86 @@ export default function Page() {
   ) 
 }
 
-function Modal () {
+function Modal({ isModalOn, handleModalOpening, newContainerName, setNewContainerName }: any) {
+  
+  enum statusType { not_submitted, is_submitting, successful, failed };
+  const userDetails = useUserContext();
+  const {accessToken} = useAuthContext();
+  console.log("User details in Modal", userDetails);
+ 
+  //status will be 'not submitted'||'is submitting'||'successful'||'failed'
+  const [status, setStatus] = useState<statusType>(statusType.not_submitted);
+
+  useEffect( () => {
+    if (status === statusType.is_submitting) {
+      //ready data to send to server
+      const data = {
+        name: newContainerName,
+        user: userDetails.user.id
+      }
+      //make request
+      axios.post(
+        BACKEND_URL+ENDPOINTS.createContainers,
+        data,
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          },
+        }
+      ).then(res => {
+        console.log(res.data);
+      })
+    }
+
+  }, [status])
+
+
 
   return (
-    <Dialog.Root>
-      <Dialog.Trigger asChild>
-        <Button>+ Add Container</Button>
-      </Dialog.Trigger>
+    <Dialog.Root open={isModalOn} onOpenChange={handleModalOpening}>
       <Dialog.Portal>
-        <Dialog.Overlay forceMount/>
-        <Dialog.Content>
-          <Dialog.Title>Add Container</Dialog.Title>
-          <Dialog.Description>
-            Enter a name for your container.
-          </Dialog.Description>
-          <Label>Name:</Label>
-          <Input placeholder='container name...'/>
-          <Dialog.Close asChild>
-            <Button>Save</Button>
-          </Dialog.Close>
+        <Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
+        <Dialog.Content className="fixed inset-0 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <div className='flex justify-between'> 
+              <Dialog.Title className="text-xl font-semibold mb-4">Add Container</Dialog.Title>
+              <Dialog.Close asChild>
+                <Button 
+                  variant="ghost" 
+                  className="hover:bg-gray-700 hover:text-white text-black p-2 rounded hover:shadow-md"
+                >
+                  Close
+                </Button>
+              </Dialog.Close>
+            </div>
+            
+            <Dialog.Description className="mb-4">
+              Enter a name for your container.
+            </Dialog.Description>
+            <Label className="block mb-2">Name:</Label>
+            <Input 
+              className="w-full mb-4 p-2 border rounded" 
+              value={newContainerName} 
+              placeholder='container name...'
+              onChange={(e) => setNewContainerName(e.target.value)} 
+            />
+            <div className="flex justify-end">
+            <Dialog.Close asChild>
+              <Button 
+                variant="ghost" 
+                className="bg-green-700 text-white p-2 rounded hover:shadow-md"
+                onClick={ () => setStatus(statusType.is_submitting) }
+              >
+                Save
+              </Button>
+              </Dialog.Close>
+            </div>
+          </div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
-  )
+  );
 }
 
 function AccountPage () {
@@ -51,8 +112,8 @@ function AccountPage () {
   const [isModalOn, setIsModalOn] = useState(false);
 
 
-  function handleAddContainer () {
-    setIsModalOn(!isModalOn);
+  function handleModalOpening(isOpen: boolean) {
+    setIsModalOn(isOpen);
   }
 
   return (
@@ -67,12 +128,18 @@ function AccountPage () {
         }
       </Card>
       <Card>
-        <Modal />
+      <Button onClick={() => setIsModalOn(true)}>+ Add Container</Button>
+      <Modal 
+        isModalOn={isModalOn} 
+        handleModalOpening={handleModalOpening}
+        newContainerName={newContainerName}
+        setNewContainerName={setNewContainerName} 
+      />
         <Tabs.Root>
           <Tabs.List>
             {
               containers.map(container => (
-                <Tabs.Trigger value={container.name}>
+                <Tabs.Trigger key={container.id} value={container.name}>
                   {container.name}{' '}({container.entries.length})
                 </Tabs.Trigger>
               ))
@@ -80,7 +147,7 @@ function AccountPage () {
           </Tabs.List>
           {
             containers.map(container => (
-              <Tabs.Content value={container.name}>
+              <Tabs.Content key={container.id} value={container.name}>
                 <ScrollArea.Root>
                   <ScrollArea.Viewport>
                     {
