@@ -36,15 +36,13 @@ export const UserProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   //get user details from backend
   useEffect( () => {
-
-    if (!isAuthenticated) {
-      alert("you ain't authenticated");
-      router.push("/");
-    }
-
-
+    // debugger;
+    // if (!isAuthenticated) {
+    //   alert("you ain't authenticated");
+    //   router.push("/");
+    // }
     axios
-    .get(
+    .get(         
       BACKEND_URL+ENDPOINTS.userDetail,
       {
         withCredentials: true,

@@ -30,7 +30,7 @@ export default function LoginPage() {
 
   const router = useRouter();
 
-  const {login} = useAuthContext();
+  // const {login} = useAuthContext();
 
   const LoginSchema = Yup.object().shape({
     username: Yup.string()
@@ -56,8 +56,9 @@ export default function LoginPage() {
       );
       console.log(response.data);
       if(response.data['access']) {
-        login(response.data['access'])
-        localStorage.setItem('refreshToken', response.data['refresh'])
+        // login(response.data['access'])
+        localStorage.setItem('accessToken', response.data['access']);
+        localStorage.setItem('refreshToken', response.data['refresh']);
         router.push('/journal')
       }
     },

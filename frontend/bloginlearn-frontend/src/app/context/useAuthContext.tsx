@@ -7,7 +7,7 @@ import { jwtDecode } from "jwt-decode";
 interface AuthContextProps {
   isAuthenticated: boolean;
   accessToken: string | null;
-  login: (token: string) => void;
+  // login: (token: string) => void;
   logout: () => void;
   userDetails: {}
 }
@@ -16,14 +16,14 @@ interface AuthContextProps {
 const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
   accessToken: null,
-  login: () => {},
+  // login: () => {},
   logout: () => {},
   userDetails: {}
 });
 
 // Define the provider component
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(localStorage.getItem('accessToken'));
   const [userDetails, setUserDetails] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
@@ -31,27 +31,29 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // debugger;
 
   useEffect(() => {
-    debugger;
+    // debugger;
     const token = localStorage.getItem('accessToken');
     console.log('auth context useEffect entered.')
     if (token) {
       setAccessToken(token);
       setUserDetails(jwtDecode(token));
       setIsAuthenticated(true);
-      alert("you're already logged in");
-      router.push('/journal');
+      // alert("you're already logged in");
+      // router.push('/journal');
     } else {
       alert("you're not logged in");
       router.push('/login');
     }
   }, []);
 
-  const login = (token: string) => {
-    localStorage.setItem('accessToken', token);
-    setAccessToken(token);
-    setIsAuthenticated(true)
-    router.push('/journal');  // Redirect to the home page or any other page
-  };
+  // const login = (token: string) => {
+  //   debugger;
+  //   localStorage.setItem('accessToken', token);
+  //   setAccessToken(token);
+  //   setIsAuthenticated(true)
+  //   router.push('/journal');  // Redirect to the home page or any other page
+  // }; this will not work because I have moved the provider and 
+  // the login page is no longer provided this context
 
   const logout = () => {
     localStorage.removeItem('accessToken');
@@ -60,7 +62,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, accessToken, login, logout, userDetails }}>
+    <AuthContext.Provider value={{ isAuthenticated, accessToken, logout, userDetails }}>
       {children}
     </AuthContext.Provider>
   );

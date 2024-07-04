@@ -1,6 +1,6 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react'
-import { UserProvider, useUserContext } from '../context/UserContext'
+import { UserProvider, useUserContext } from '../../context/UserContext'
 import { Button, Card, Flex, Table, Text } from '@radix-ui/themes';
 import * as Tabs from '@radix-ui/react-tabs';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { stat } from 'fs';
 import axios from 'axios';
 import { BACKEND_URL, ENDPOINTS } from '@/lib/utils';
-import { useAuthContext } from '../context/useAuthContext';
+import { useAuthContext } from '../../context/useAuthContext';
 import { useRouter } from 'next/navigation';
 
 export default function Page() {

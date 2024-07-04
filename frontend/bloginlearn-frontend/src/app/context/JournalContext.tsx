@@ -49,7 +49,7 @@ export const JournalProvider: React.FC<{children: ReactNode}> = ({children}) => 
   const [currentThoughtTitle, setCurrentThoughtTitle] = useState('');
 
   useEffect( () => {
-    debugger;
+    // debugger;
     // if (!isAuthenticated) {
     //   alert("You're not logged in");
     //   router.push('/login');
@@ -73,6 +73,14 @@ export const JournalProvider: React.FC<{children: ReactNode}> = ({children}) => 
     .catch(error => {
       console.log(error);
     })
+    let possible_container = localStorage.getItem("selectedContainer")
+    if (possible_container) {
+      setSelectedContainer(parseInt(possible_container))
+    } else {
+      localStorage.setItem("selectedContainer", selectedContainer.toString());
+    }
+
+    return () => localStorage.removeItem("selectedContainer");
   }, [selectedContainer]);
 
   return (

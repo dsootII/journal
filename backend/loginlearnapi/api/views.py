@@ -90,6 +90,7 @@ class LogoutView(APIView):
 class ContainerListView(generics.ListAPIView):
   # queryset = Container.objects.all()
   # serializer_class = ContainerSerializer
+  # permission_classes = [AllowAny]
   
   def get(self, request):
     user = get_user_from_auth_header(request=request)

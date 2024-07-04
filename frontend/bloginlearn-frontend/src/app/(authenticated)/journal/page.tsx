@@ -5,11 +5,11 @@ import LeftPanel from "./components/left-panel/LeftPanel";
 import JournalNavbar from "./components/navbar";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
-import { AuthProvider, useAuthContext } from "../context/useAuthContext";
+import { AuthProvider, useAuthContext } from "../../context/useAuthContext";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { BACKEND_URL, ENDPOINTS } from "@/lib/utils";
-import { JournalProvider, useJournalContext } from '../context/JournalContext';
+import { JournalProvider, useJournalContext } from '../../context/JournalContext';
 
 
 interface Entry {
@@ -45,7 +45,7 @@ export default function Page() {
 
 function JournalPage() {
   const { loading } = useJournalContext();
-  
+  const {isAuthenticated} = useAuthContext();  
   return (
 
     <div className="flex w-screen h-screen bg-stone-100">
