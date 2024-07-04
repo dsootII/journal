@@ -25,22 +25,31 @@ const AuthContext = createContext<AuthContextProps>({
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [userDetails, setUserDetails] = useState({});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
   console.log('AuthProvider entered');
   // debugger;
 
   useEffect(() => {
+    debugger;
     const token = localStorage.getItem('accessToken');
     console.log('auth context useEffect entered.')
     if (token) {
       setAccessToken(token);
       setUserDetails(jwtDecode(token));
+      setIsAuthenticated(true);
+      alert("you're already logged in");
+      router.push('/journal');
+    } else {
+      alert("you're not logged in");
+      router.push('/login');
     }
   }, []);
 
   const login = (token: string) => {
     localStorage.setItem('accessToken', token);
     setAccessToken(token);
+    setIsAuthenticated(true)
     router.push('/journal');  // Redirect to the home page or any other page
   };
 
@@ -49,8 +58,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setAccessToken(null);
     router.push('/login');  // Redirect to the login page
   };
-
-  const isAuthenticated = !!accessToken;
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, accessToken, login, logout, userDetails }}>

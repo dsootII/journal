@@ -5,7 +5,7 @@ import LeftPanel from "./components/left-panel/LeftPanel";
 import JournalNavbar from "./components/navbar";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
-import { useAuthContext } from "../context/useAuthContext";
+import { AuthProvider, useAuthContext } from "../context/useAuthContext";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { BACKEND_URL, ENDPOINTS } from "@/lib/utils";
@@ -34,9 +34,9 @@ type Containers = Container[];
 export default function Page() {
 
   return(
-    <JournalProvider>
-      <JournalPage />
-    </JournalProvider>
+      <JournalProvider>
+        <JournalPage />
+      </JournalProvider>
   )
 }
 

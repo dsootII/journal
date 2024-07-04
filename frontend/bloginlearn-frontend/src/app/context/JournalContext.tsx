@@ -49,10 +49,11 @@ export const JournalProvider: React.FC<{children: ReactNode}> = ({children}) => 
   const [currentThoughtTitle, setCurrentThoughtTitle] = useState('');
 
   useEffect( () => {
-    if (!isAuthenticated) {
-      alert("You're not logged in");
-      router.push('/login');
-    }
+    debugger;
+    // if (!isAuthenticated) {
+    //   alert("You're not logged in");
+    //   router.push('/login');
+    // }
     console.log("accessToken being sent to the backend", accessToken); 
     axios.get(
       BACKEND_URL+ENDPOINTS.listContainers, 
@@ -72,7 +73,7 @@ export const JournalProvider: React.FC<{children: ReactNode}> = ({children}) => 
     .catch(error => {
       console.log(error);
     })
-  }, []);
+  }, [selectedContainer]);
 
   return (
     <JournalContext.Provider 

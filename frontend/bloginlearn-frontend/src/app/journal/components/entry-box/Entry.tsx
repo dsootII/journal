@@ -16,13 +16,26 @@ export default function Entry () {
     currentThoughtTitle, 
     setCurrentThought, 
     setCurrentThoughtTitle,
-    selectedContainer 
+    selectedContainer,
+    setSelectedContainer
   } = useJournalContext();
 
   useEffect( () => {
     axios.post(BACKEND_URL+ENDPOINTS.createEntry, dbCallData)
     .then(res => {
       console.log(res)
+      debugger;
+      // setSelectedContainer()
+      var ent: Entry = {
+        id: 0,
+        title: "",
+        body: "",
+        created_at: "",
+        updated_at: "",
+        user: 1,
+        container: 1,
+      };
+      selectedContainer.entries.push(ent);
     })
     .catch(err => {
       console.log(err)
