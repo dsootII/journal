@@ -24,7 +24,6 @@ import { useAuthContext } from "../context/useAuthContext";
 
 export default function SignupPage() {
   const router = useRouter();
-  const {login} = useAuthContext();
 
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
@@ -57,7 +56,7 @@ export default function SignupPage() {
       );
       console.log(response.data);
       if (response.data['access']) {
-        login(response.data['access']);
+        localStorage.setItem('accessToken', response.data['access']);
         localStorage.setItem('refreshToken', response.data['refresh']);
         router.push('/journal');
       } else {

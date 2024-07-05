@@ -33,8 +33,11 @@ export default function EntryList () {
     setCurrentThoughtTitle(entry.title);
   }
 
-  const entriesReversed = [...selectedContainer.entries].reverse(); //to show the latest first
+  if (containerList.length === 0) {
+    return <div>Add containers on the Account Page!</div>
+  }
 
+  const entriesReversed = [...selectedContainer.entries].reverse(); //to show the latest first
 
   return (
     <div className="h-5/6 flex flex-col ">

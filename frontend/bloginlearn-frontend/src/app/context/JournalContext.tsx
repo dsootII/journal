@@ -4,6 +4,8 @@ import { useAuthContext } from './useAuthContext';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { BACKEND_URL, ENDPOINTS } from '@/lib/utils';
+import axiosInstance from '@/lib/CustomAxios';
+import createAxiosInstance from '@/lib/CustomAxios';
 
 //define the types
 interface JournalContextValues {
@@ -57,25 +59,20 @@ export const JournalProvider: React.FC<{children: ReactNode}> = ({children}) => 
     //   alert("You're not logged in");
     //   router.push('/login');
     // }
+    debugger;
     console.log("accessToken being sent to the backend", accessToken);
-    axios.get(
-      BACKEND_URL + ENDPOINTS.listContainers,
-      {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        },
-      })
-      .then(res => {
-        console.log("logging axios response in leftPanel useEffect", res);
-        if (res.data) {
-          setContainerList(res.data);
-          setLoading(false);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      })
+    const axiosInstance = createAxiosInstance();
+    axiosInstance.get( ENDPOINTS.listContainers)
+    .then(res => {
+      console.log("logging axios response in leftPanel useEffect", res);
+      if (res.data) {
+        setContainerList(res.data);
+        setLoading(false);
+      }
+    })
+    .catch(error => {
+      console.log(error);
+    })
     let possible_container = localStorage.getItem("selectedContainer")
     if (possible_container) {
       setSelectedContainer(parseInt(possible_container))

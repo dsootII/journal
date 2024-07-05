@@ -4,6 +4,8 @@ import { useAuthContext } from './useAuthContext';
 import axios from 'axios';
 import { BACKEND_URL, ENDPOINTS } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import axiosInstance from '@/lib/CustomAxios';
+import createAxiosInstance from '@/lib/CustomAxios';
 
 //define types
 interface UserContextValues {
@@ -62,29 +64,18 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   //get user details from backend
   useEffect(() => {
-    // debugger;
-    // if (!isAuthenticated) {
-    //   alert("you ain't authenticated");
-    //   router.push("/");
-    // }
-    axios.get(
-      BACKEND_URL + ENDPOINTS.userDetail,
-      {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        },
-      })
-      .then(res => {
-        if (res.data) {
-          setUserDetails(res.data);
-        }
-        else {
-          alert("failed to retreive user info");
-        }
-      })
-      .catch(err => {
-        console.log(err)
+    const axiosInstance = createAxiosInstance();
+    axiosInstance.get(ENDPOINTS.userDetail)
+    .then(res => {
+      if (res.data) {
+        setUserDetails(res.data);
+      }
+      else {
+        alert("failed to retreive user info");
+      }
+    })
+    .catch(err => {
+      console.log(err)
     });
     
     return () => setContainersUpdated(false)

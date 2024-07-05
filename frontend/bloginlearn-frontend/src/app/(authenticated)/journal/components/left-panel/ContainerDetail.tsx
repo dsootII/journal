@@ -37,9 +37,9 @@ export default function ContainerDetail() {
       <Card className="bg-stone-400 hover:bg-stone-600 h-full rounded-none">
         <CardHeader>
           <CardTitle>
-            {selectedContainer.name}
+            {selectedContainer?.name || "Add containers on Account Page"}
           </CardTitle>
-          <CardDescription>No. of entries: {selectedContainer.entries.length}</CardDescription>
+          <CardDescription>No. of entries: {selectedContainer?.entries?.length || "Add containers on Account Page"}</CardDescription>
         </CardHeader>
       </Card>
     </div>

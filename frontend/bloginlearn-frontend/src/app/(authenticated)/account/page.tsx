@@ -13,6 +13,8 @@ import { BACKEND_URL, ENDPOINTS } from '@/lib/utils';
 import { useAuthContext } from '../../context/useAuthContext';
 import { useRouter } from 'next/navigation';
 import Modal from './components/Modal';
+import axiosInstance from '@/lib/CustomAxios';
+import createAxiosInstance from '@/lib/CustomAxios';
 
 
 export default function Page() {
@@ -55,18 +57,12 @@ function AccountPage() {
 
   useEffect(() => {
     // debugger;
+    const axiosInstance = createAxiosInstance();
     console.log('accpage useEffect ran')
     if (deleteSelectedContainer) {
       if (confirm(`deleting container "${containerNameRef.current}" permanently`)) {
-        axios.delete(
-          BACKEND_URL + ENDPOINTS.deleteContainer + `${selectedContainerTab}/`,
-          {
-            withCredentials: true,
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            },
-          }
-        ).then(res => {
+        axiosInstance.delete(ENDPOINTS.deleteContainer + `${selectedContainerTab}/`)
+        .then(res => {
           console.log(res);
           setContainersUpdated(true)
         })
@@ -74,15 +70,8 @@ function AccountPage() {
     }
     if (deleteEntry) {
       if (confirm(`deleting entry "${entryRef.current?.title}" permanently`)) {
-        axios.delete(
-          BACKEND_URL+ENDPOINTS.createEntry+`${entryRef.current?.id}/`,
-          {
-            withCredentials: true,
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            },
-          }
-        ).then(res => {
+        axiosInstance.delete(ENDPOINTS.createEntry+`${entryRef.current?.id}/`)
+        .then(res => {
           console.log(res);
           setContainersUpdated(true);
         })

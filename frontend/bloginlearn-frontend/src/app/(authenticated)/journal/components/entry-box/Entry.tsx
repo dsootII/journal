@@ -7,6 +7,8 @@ import axios from "axios";
 import { BACKEND_URL, ENDPOINTS } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import ConclusionButtonWithToast from "./ConclusionToast";
+import axiosInstance from "@/lib/CustomAxios";
+import createAxiosInstance from "@/lib/CustomAxios";
 
 
 export default function Entry() {
@@ -25,25 +27,11 @@ export default function Entry() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    axios.post(BACKEND_URL + ENDPOINTS.createEntry, dbCallData)
+    const axiosInstance = createAxiosInstance();
+    axiosInstance.post(ENDPOINTS.createEntry, dbCallData)
       .then(res => {
         console.log("entry creation response", res)
-
         setOpen(true)
-
-        // router.refresh();
-        // debugger;
-        // // setSelectedContainer()
-        // var ent: Entry = {
-        //   id: 0,
-        //   title: "",
-        //   body: "",
-        //   created_at: "",
-        //   updated_at: "",
-        //   user: 1,
-        //   container: 1,
-        // };
-        // selectedContainer.entries.push(ent);
       })
       .catch(err => {
         console.log(err)

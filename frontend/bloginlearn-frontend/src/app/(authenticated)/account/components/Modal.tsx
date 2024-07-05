@@ -1,6 +1,8 @@
 import { useAuthContext } from "@/app/context/useAuthContext";
 import { useUserContext } from "@/app/context/UserContext";
 import { Input } from "@/components/ui/input";
+import createAxiosInstance from "@/lib/CustomAxios";
+import axiosInstance from "@/lib/CustomAxios";
 import { BACKEND_URL, ENDPOINTS } from "@/lib/utils";
 import * as Dialog from '@radix-ui/react-dialog';
 import { Label } from "@radix-ui/react-dropdown-menu";
@@ -19,6 +21,7 @@ export default function Modal({ isModalOn, handleModalOpening, newContainerName,
   const [status, setStatus] = useState<statusType>(statusType.not_submitted);
 
   useEffect( () => {
+    
     if (status === statusType.is_submitting) {
       //ready data to send to server
       const data = {
@@ -26,20 +29,17 @@ export default function Modal({ isModalOn, handleModalOpening, newContainerName,
         user: userDetails.user.id
       }
       //make request
-      axios.post(
-        BACKEND_URL+ENDPOINTS.createContainers,
-        data,
-        {
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          },
-        }
-      ).then(res => {
+      const axiosInstance = createAxiosInstance();
+      axiosInstance.post(ENDPOINTS.createContainers, data)
+      .then(res => {
         console.log(res.data);
+        setStatus(statusType.successful);
+        setNewContainerName('');
         setContainersUpdated(true);
       })
     }
+
+    return () => setStatus(statusType.not_submitted)
 
   }, [status])
 
