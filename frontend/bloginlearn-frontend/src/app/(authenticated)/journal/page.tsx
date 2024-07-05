@@ -45,7 +45,7 @@ export default function Page() {
 
 function JournalPage() {
   const { loading } = useJournalContext();
-  const {isAuthenticated} = useAuthContext();  
+    
   return (
 
     <div className="flex w-screen h-screen bg-stone-100">

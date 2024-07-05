@@ -2,60 +2,76 @@ import { Button } from "@/components/ui/button";
 import InputBox from "./InputBox";
 import ToolBar from "./ToolBar";
 import { useJournalContext } from "@/app/context/JournalContext";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL, ENDPOINTS } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import ToastDemo from "./ToastDemo";
+import ConclusionButtonWithToast from "./ConclusionToast";
 
 
-export default function Entry () {
+export default function Entry() {
   const router = useRouter();
   const [dbCallData, setDbCallData] = useState({});
-  const { 
-    currentThought, 
-    currentThoughtTitle, 
-    setCurrentThought, 
+  const {
+    currentThought,
+    currentThoughtTitle,
+    setCurrentThought,
     setCurrentThoughtTitle,
     selectedContainer,
-    setSelectedContainer
+    setSelectedContainer,
+    setListUpdated
   } = useJournalContext();
 
-  useEffect( () => {
-    axios.post(BACKEND_URL+ENDPOINTS.createEntry, dbCallData)
-    .then(res => {
-      console.log(res)
-      router.refresh();
-      // debugger;
-      // // setSelectedContainer()
-      // var ent: Entry = {
-      //   id: 0,
-      //   title: "",
-      //   body: "",
-      //   created_at: "",
-      //   updated_at: "",
-      //   user: 1,
-      //   container: 1,
-      // };
-      // selectedContainer.entries.push(ent);
-    })
-    .catch(err => {
-      console.log(err)
-    })
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    axios.post(BACKEND_URL + ENDPOINTS.createEntry, dbCallData)
+      .then(res => {
+        console.log("entry creation response", res)
+
+        setOpen(true)
+
+        // router.refresh();
+        // debugger;
+        // // setSelectedContainer()
+        // var ent: Entry = {
+        //   id: 0,
+        //   title: "",
+        //   body: "",
+        //   created_at: "",
+        //   updated_at: "",
+        //   user: 1,
+        //   container: 1,
+        // };
+        // selectedContainer.entries.push(ent);
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }, [dbCallData])
 
+  useEffect(() => {
+    return () => clearTimeout(timerRef.current);
+  }, []);
 
+  const timerRef = useRef(0);
 
-  function handleConclude() {
-    //how do I make a DB call here? state and hook? let's try
-    console.log('container being sent:', selectedContainer);
+  function handleThoughtConclusion() {
     const data = {
       title: currentThoughtTitle,
       body: currentThought,
       container: selectedContainer.id
     }
     setDbCallData(data);
-    router.refresh();
+
+    setOpen(true);
+    window.clearTimeout(timerRef.current);
+    timerRef.current = window.setTimeout(() => {
+      setOpen(false);
+    }, 100);
+    setCurrentThought('');
+    setCurrentThoughtTitle('');
+    setListUpdated(true);
   }
 
   function handlePerish() {
@@ -68,22 +84,22 @@ export default function Entry () {
 
   return (
     <div className="border border-stone-200 rounded-md flex-grow">
-      <ToolBar/>
+      <ToolBar />
       <InputBox />
-      <div className="flex justify-end py-2">
-        <ToastDemo/>
-        <Button 
-          className="px-2 mx-1  hover:bg-green-700"
-          onClick={handleConclude}
-        >
-          Conclude
-        </Button>
-        <Button 
-          className="px-2 mx-1 hover:bg-red-700"
-          onClick={handlePerish}
-        >
-          Perish
-        </Button>
+      <div className="flex justify-end py-2 pr-5">
+        <div className="flex h-full items-center">
+          <ConclusionButtonWithToast
+            open={open}
+            setOpen={setOpen}
+            handleThoughtConclusion={handleThoughtConclusion}
+          />
+          <Button
+            className="px-2 mx-1 hover:bg-red-700 h-[35px] rounded"
+            onClick={handlePerish}
+          >
+            Perish
+          </Button>
+        </div>
       </div>
     </div>
   )

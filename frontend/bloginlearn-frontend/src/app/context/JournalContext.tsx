@@ -15,6 +15,7 @@ interface JournalContextValues {
   setCurrentThought: Dispatch<SetStateAction<string>>;
   currentThoughtTitle: string;
   setCurrentThoughtTitle: Dispatch<SetStateAction<string>>;
+  setListUpdated: Dispatch<SetStateAction<boolean>>
 }
 
 const defaultContainerValue: Container = {
@@ -33,7 +34,8 @@ const JournalContext = createContext<JournalContextValues>({
   currentThought: '',
   setCurrentThought: () => {},
   currentThoughtTitle: '',
-  setCurrentThoughtTitle: () => {}
+  setCurrentThoughtTitle: () => {},
+  setListUpdated: () => {}
 });
 
 //create JournalContext component, which will return the provider component,
@@ -47,32 +49,33 @@ export const JournalProvider: React.FC<{children: ReactNode}> = ({children}) => 
   const { isAuthenticated, accessToken } = useAuthContext();
   const [currentThought, setCurrentThought] = useState('');
   const [currentThoughtTitle, setCurrentThoughtTitle] = useState('');
+  const [listUpdated, setListUpdated] = useState(false);
 
-  useEffect( () => {
+  useEffect(() => {
     // debugger;
     // if (!isAuthenticated) {
     //   alert("You're not logged in");
     //   router.push('/login');
     // }
-    console.log("accessToken being sent to the backend", accessToken); 
+    console.log("accessToken being sent to the backend", accessToken);
     axios.get(
-      BACKEND_URL+ENDPOINTS.listContainers, 
+      BACKEND_URL + ENDPOINTS.listContainers,
       {
         withCredentials: true,
         headers: {
           Authorization: `Bearer ${accessToken}`
         },
       })
-    .then(res => {
-      console.log("logging axios response in leftPanel useEffect", res);
-      if (res.data) {
-        setContainerList(res.data);
-        setLoading(false);
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    })
+      .then(res => {
+        console.log("logging axios response in leftPanel useEffect", res);
+        if (res.data) {
+          setContainerList(res.data);
+          setLoading(false);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
     let possible_container = localStorage.getItem("selectedContainer")
     if (possible_container) {
       setSelectedContainer(parseInt(possible_container))
@@ -80,8 +83,12 @@ export const JournalProvider: React.FC<{children: ReactNode}> = ({children}) => 
       localStorage.setItem("selectedContainer", selectedContainer.toString());
     }
 
-    return () => localStorage.removeItem("selectedContainer");
-  }, [selectedContainer]);
+    return () => {
+      localStorage.removeItem("selectedContainer");
+      setLoading(true);
+      setListUpdated(false);
+    }
+  }, [listUpdated]);
 
   return (
     <JournalContext.Provider 
@@ -93,7 +100,8 @@ export const JournalProvider: React.FC<{children: ReactNode}> = ({children}) => 
         currentThought, 
         setCurrentThought,
         currentThoughtTitle,
-        setCurrentThoughtTitle
+        setCurrentThoughtTitle,
+        setListUpdated
       }}
     >
       {children}

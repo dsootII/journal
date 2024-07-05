@@ -1,5 +1,5 @@
 'use client';
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
+import React, { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from 'react'
 import { useAuthContext } from './useAuthContext';
 import axios from 'axios';
 import { BACKEND_URL, ENDPOINTS } from '@/lib/utils';
@@ -7,6 +7,18 @@ import { useRouter } from 'next/navigation';
 
 //define types
 interface UserContextValues {
+  userDetails: {
+    user: {
+      id: number,
+      username: string,
+      email: string
+    },
+    containers: Containers
+  },
+  setContainersUpdated: Dispatch<SetStateAction<boolean>>
+}
+
+interface StateValues {
   user: {
     id: number,
     username: string,
@@ -16,10 +28,22 @@ interface UserContextValues {
 }
 
 const defaultValue: UserContextValues = {
+  userDetails: {
+    user: {
+      id: 0,
+      username: "testun",
+      email: "testEmail"
+    },
+    containers: []
+  }, 
+  setContainersUpdated: () => { }
+}
+
+const defaultState: StateValues = {
   user: {
-    id: 0,
-    username: "testun",
-    email: "testEmail"
+    id: -1,
+    username: "testuewrn",
+    email: "testEmewrwerail"
   },
   containers: []
 }
@@ -29,43 +53,45 @@ const defaultValue: UserContextValues = {
 const userContext = createContext<UserContextValues>(defaultValue);
 
 //create and export provider
-export const UserProvider: React.FC<{children: ReactNode}> = ({children}) => {
-  const {isAuthenticated, accessToken} = useAuthContext();
-  const [userDetails, setUserDetails] = useState(defaultValue);
+export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { isAuthenticated, accessToken } = useAuthContext();
+  
+  const [userDetails, setUserDetails] = useState<StateValues>(defaultState);
   const router = useRouter();
+  const [containersUpdated, setContainersUpdated] = useState(false);
 
   //get user details from backend
-  useEffect( () => {
+  useEffect(() => {
     // debugger;
     // if (!isAuthenticated) {
     //   alert("you ain't authenticated");
     //   router.push("/");
     // }
-    axios
-    .get(         
-      BACKEND_URL+ENDPOINTS.userDetail,
+    axios.get(
+      BACKEND_URL + ENDPOINTS.userDetail,
       {
         withCredentials: true,
         headers: {
           Authorization: `Bearer ${accessToken}`
         },
-    })
-    .then(res => {
-      if (res.data) {
-        setUserDetails(res.data);
-      }
-      else {
-        alert("failed to retreive user info");
-      }
-    })
-    .catch(err => {
-      console.log(err)
+      })
+      .then(res => {
+        if (res.data) {
+          setUserDetails(res.data);
+        }
+        else {
+          alert("failed to retreive user info");
+        }
+      })
+      .catch(err => {
+        console.log(err)
     });
-
-  }, [])
+    
+    return () => setContainersUpdated(false)
+  }, [containersUpdated])
 
   return (
-    <userContext.Provider value={userDetails}>
+    <userContext.Provider value={{userDetails, setContainersUpdated}}>
       {children}
     </userContext.Provider>
   )

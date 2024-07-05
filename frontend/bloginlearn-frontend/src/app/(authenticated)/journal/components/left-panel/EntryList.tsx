@@ -33,6 +33,8 @@ export default function EntryList () {
     setCurrentThoughtTitle(entry.title);
   }
 
+  const entriesReversed = [...selectedContainer.entries].reverse(); //to show the latest first
+
 
   return (
     <div className="h-5/6 flex flex-col ">
@@ -52,10 +54,10 @@ export default function EntryList () {
         <CardContent className="flex-1 overflow-y-auto bg-stone-700 scrollbar scrollbar-thumb-stone-800">
           <div>
             {
-              selectedContainer.entries.map((entry) => {
+              entriesReversed.map((entry) => {
                 return (
                   <Card 
-                    className = "bg-stone-200 my-2 hover:shadow-lg hover:bg-stone-300" 
+                    className = "bg-stone-200 my-2 hover:shadow-lg hover:bg-stone-300 active:bg-stone-500 focus:border focus:border-black" 
                     key={entry.id}
                     onClick={() => handleEntryClick(entry)}
                   >

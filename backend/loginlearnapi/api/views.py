@@ -118,7 +118,8 @@ class ContainerCreateView(generics.CreateAPIView):
   serializer_class = ContainerSerializer
   
 class ContainerDeleteView(generics.DestroyAPIView):
-  pass
+  queryset = Container.objects.all()
+  serializer_class = ContainerSerializer
   
 class EntryViewSet(viewsets.ModelViewSet):
   queryset = Entry.objects.all()
