@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL, ENDPOINTS } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import ToastDemo from "./ToastDemo";
 
 
 export default function Entry () {
@@ -70,6 +71,7 @@ export default function Entry () {
       <ToolBar/>
       <InputBox />
       <div className="flex justify-end py-2">
+        <ToastDemo/>
         <Button 
           className="px-2 mx-1  hover:bg-green-700"
           onClick={handleConclude}
