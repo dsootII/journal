@@ -84,15 +84,20 @@ export const JournalProvider: React.FC<{children: ReactNode}> = ({children}) => 
       .catch(error => {
         console.log(error);
       })
-    let possible_container = localStorage.getItem("selectedContainer")
-    if (possible_container) {
-      setSelectedContainer(parseInt(possible_container))
-    } else {
-      localStorage.setItem("selectedContainer", selectedContainer.toString());
+    if (typeof window !== 'undefined') {
+      let possible_container = localStorage.getItem("selectedContainer")
+      if (possible_container) {
+        setSelectedContainer(parseInt(possible_container))
+      } else {
+        localStorage.setItem("selectedContainer", selectedContainer.toString());
+      }
     }
+    
 
     return () => {
-      localStorage.removeItem("selectedContainer");
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem("selectedContainer");
+      }
       setLoading(true);
       setListUpdated(false);
     }

@@ -20,10 +20,13 @@ export default function JournalNavbar() {
   
   function handleLogout() {
     logout();
-    if (localStorage.getItem('refreshToken')) {
-      localStorage.removeItem('refreshToken');
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('refreshToken')) {
+        localStorage.removeItem('refreshToken');
+      }
+      router.push('/');
     }
-    router.push('/');
+    
   }
 
   function handleNewNoteCreation () {

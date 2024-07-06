@@ -23,7 +23,7 @@ const AuthContext = createContext<AuthContextProps>({
 
 // Define the provider component
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [accessToken, setAccessToken] = useState<string | null>(localStorage.getItem('accessToken'));
+  const [accessToken, setAccessToken] = useState<string | null>(typeof window !== undefined ? localStorage.getItem('accessToken') : null);
   const [userDetails, setUserDetails] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
@@ -56,7 +56,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // the login page is no longer provided this context
 
   const logout = () => {
-    localStorage.removeItem('accessToken');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('accessToken');  
+    }
     setAccessToken(null);
     router.push('/login');  // Redirect to the login page
   };

@@ -56,8 +56,10 @@ export default function SignupPage() {
       );
       console.log(response.data);
       if (response.data['access']) {
-        localStorage.setItem('accessToken', response.data['access']);
-        localStorage.setItem('refreshToken', response.data['refresh']);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('accessToken', response.data['access']);
+          localStorage.setItem('refreshToken', response.data['refresh']);
+        }
         router.push('/journal');
       } else {
         alert(response.data);

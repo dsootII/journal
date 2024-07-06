@@ -55,10 +55,12 @@ export default function LoginPage() {
         {withCredentials: true}
       );
       console.log(response.data);
-      if(response.data['access']) {
+      if (response.data['access']) {
         // login(response.data['access'])
-        localStorage.setItem('accessToken', response.data['access']);
-        localStorage.setItem('refreshToken', response.data['refresh']);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('accessToken', response.data['access']);
+          localStorage.setItem('refreshToken', response.data['refresh']);
+        }
         router.push('/journal')
       }
     },
