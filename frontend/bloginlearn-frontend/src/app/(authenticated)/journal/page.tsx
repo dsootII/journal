@@ -5,7 +5,7 @@ import { useJournalContext } from '../../../context/JournalContext';
 const Entry = dynamic(() => import('../../../components/journal_components/entry-box/Entry'), {ssr: false});
 const LeftPanel = dynamic(() => import('../../../components/journal_components/left-panel/LeftPanel'), {ssr: false});
 const JournalNavbar = dynamic(() => import('../../../components/journal_components/navbar'), {ssr: false});
-const JournalProvider  = dynamic({...() => import('../../../context/JournalContext')}, {ssr: false});
+const JournalProvider: any  = dynamic({...() => import('../../../context/JournalContext')}, {ssr: false});
 
 
 

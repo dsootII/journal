@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 
-const UserProvider = dynamic({...() => import('../../../context/UserContext')}, {ssr: false});
+const UserProvider: any = dynamic({...() => import('../../../context/UserContext')}, {ssr: false});
 
 import {useUserContext } from '../../../context/UserContext'
 import { Button, Card, Flex, Text } from '@radix-ui/themes';
