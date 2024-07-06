@@ -1,13 +1,12 @@
+"use client";
 import { useAuthContext } from "@/app/context/useAuthContext";
 import { useUserContext } from "@/app/context/UserContext";
 import { Input } from "@/components/ui/input";
 import createAxiosInstance from "@/lib/CustomAxios";
-import axiosInstance from "@/lib/CustomAxios";
-import { BACKEND_URL, ENDPOINTS } from "@/lib/utils";
+import { ENDPOINTS } from "@/lib/utils";
 import * as Dialog from '@radix-ui/react-dialog';
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Button } from "@radix-ui/themes";
-import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function Modal({ isModalOn, handleModalOpening, newContainerName, setNewContainerName }: any) {

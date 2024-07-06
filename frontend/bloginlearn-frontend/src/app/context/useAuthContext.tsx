@@ -23,7 +23,7 @@ const AuthContext = createContext<AuthContextProps>({
 
 // Define the provider component
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [accessToken, setAccessToken] = useState<string | null>(typeof window !== undefined ? localStorage.getItem('accessToken') : null);
+  const [accessToken, setAccessToken] = useState<string | null>((typeof window !== undefined) ? localStorage.getItem('accessToken') : null);
   const [userDetails, setUserDetails] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();

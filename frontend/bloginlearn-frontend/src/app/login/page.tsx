@@ -16,8 +16,6 @@ import { BACKEND_URL, ENDPOINTS } from "@/lib/utils";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useRouter } from "next/navigation";
-import useAuth from "@/hooks/useAuth";
-import { useAuthContext } from "../context/useAuthContext";
 
 interface LoginFormValues {
   username: string;

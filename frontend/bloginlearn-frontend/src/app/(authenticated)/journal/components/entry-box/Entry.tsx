@@ -1,15 +1,13 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import InputBox from "./InputBox";
 import ToolBar from "./ToolBar";
 import { useJournalContext } from "@/app/context/JournalContext";
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { BACKEND_URL, ENDPOINTS } from "@/lib/utils";
+import { ENDPOINTS } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import ConclusionButtonWithToast from "./ConclusionToast";
-import axiosInstance from "@/lib/CustomAxios";
 import createAxiosInstance from "@/lib/CustomAxios";
-import { create } from "domain";
 
 
 export default function Entry() {

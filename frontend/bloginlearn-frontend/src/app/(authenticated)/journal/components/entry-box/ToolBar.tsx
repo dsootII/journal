@@ -1,6 +1,5 @@
+"use client";
 import { useJournalContext } from "@/app/context/JournalContext";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 

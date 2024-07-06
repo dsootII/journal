@@ -1,12 +1,11 @@
+"use client";
+
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { DropdownMenuDemo } from "./ContainerDropdown"
 import { useJournalContext } from "@/app/context/JournalContext";
 import { Input } from "@/components/ui/input";
 import { useEffect, useRef, useState } from "react";

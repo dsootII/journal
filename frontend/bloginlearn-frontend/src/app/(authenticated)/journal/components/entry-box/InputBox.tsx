@@ -1,5 +1,5 @@
+"use client";
 import { useJournalContext } from "@/app/context/JournalContext";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 export default function InputBox () {

@@ -4,7 +4,6 @@ import Entry from "./components/entry-box/Entry";
 import LeftPanel from "./components/left-panel/LeftPanel";
 import JournalNavbar from "./components/navbar";
 import { useRouter } from "next/navigation";
-import useAuth from "@/hooks/useAuth";
 import { AuthProvider, useAuthContext } from "../../context/useAuthContext";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
