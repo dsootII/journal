@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import Entry from "./components/entry-box/Entry";
-import LeftPanel from "./components/left-panel/LeftPanel";
-import JournalNavbar from "./components/navbar";
+import Entry from "../../../components/journal_components/entry-box/Entry";
+import LeftPanel from "../../../components/journal_components/left-panel/LeftPanel";
+import JournalNavbar from "../../../components/journal_components/navbar";
 import { useRouter } from "next/navigation";
 import { AuthProvider, useAuthContext } from "../../../context/useAuthContext";
 import { jwtDecode } from "jwt-decode";

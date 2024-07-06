@@ -7,7 +7,7 @@ import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { ENDPOINTS } from '@/lib/utils';
 import { useAuthContext } from '../../../context/useAuthContext';
 import { useRouter } from 'next/navigation';
-import Modal from './components/Modal';
+import Modal from '../../../components/account_components/Modal';
 import createAxiosInstance from '@/lib/CustomAxios';
 
 

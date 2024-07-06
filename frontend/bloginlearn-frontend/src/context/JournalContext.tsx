@@ -6,7 +6,7 @@ import axios from 'axios';
 import { BACKEND_URL, ENDPOINTS } from '@/lib/utils';
 import axiosInstance from '@/lib/CustomAxios';
 import createAxiosInstance from '@/lib/CustomAxios';
-import Entry from '../app/(authenticated)/journal/components/entry-box/Entry';
+import Entry from '../components/journal_components/entry-box/Entry';
 
 //define the types
 interface JournalContextValues {
