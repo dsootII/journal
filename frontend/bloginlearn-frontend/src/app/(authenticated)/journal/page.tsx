@@ -1,14 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
-import Entry from "../../../components/journal_components/entry-box/Entry";
-import LeftPanel from "../../../components/journal_components/left-panel/LeftPanel";
-import JournalNavbar from "../../../components/journal_components/navbar";
-import { useRouter } from "next/navigation";
-import { AuthProvider, useAuthContext } from "../../../context/useAuthContext";
-import { jwtDecode } from "jwt-decode";
-import axios from "axios";
-import { BACKEND_URL, ENDPOINTS } from "@/lib/utils";
-import { JournalProvider, useJournalContext } from '../../../context/JournalContext';
+import dynamic from 'next/dynamic';
+import { useJournalContext } from '../../../context/JournalContext';
+
+const Entry = dynamic(() => import('../../../components/journal_components/entry-box/Entry'), {ssr: false});
+const LeftPanel = dynamic(() => import('../../../components/journal_components/left-panel/LeftPanel'), {ssr: false});
+const JournalNavbar = dynamic(() => import('../../../components/journal_components/navbar'), {ssr: false});
+const JournalProvider  = dynamic({...() => import('../../../context/JournalContext')}, {ssr: false});
+
 
 
 interface Entry {

@@ -1,14 +1,19 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react'
-import { UserProvider, useUserContext } from '../../../context/UserContext'
-import { Button, Card, Flex, Table, Text } from '@radix-ui/themes';
+import React, { useEffect, useRef, useState } from 'react';
+
+const UserProvider = dynamic({...() => import('../../../context/UserContext')}, {ssr: false});
+
+import {useUserContext } from '../../../context/UserContext'
+import { Button, Card, Flex, Text } from '@radix-ui/themes';
 import * as Tabs from '@radix-ui/react-tabs';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
+import Modal from '../../../components/account_components/Modal';
+
 import { ENDPOINTS } from '@/lib/utils';
 import { useAuthContext } from '../../../context/useAuthContext';
 import { useRouter } from 'next/navigation';
-import Modal from '../../../components/account_components/Modal';
 import createAxiosInstance from '@/lib/CustomAxios';
+import dynamic from 'next/dynamic';
 
 
 export default function Page() {
