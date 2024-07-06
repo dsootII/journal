@@ -2,9 +2,9 @@
 
 import * as React from "react"
 import { Button } from "@/components/ui/button"
-import { useAuthContext } from "@/app/context/useAuthContext"
+import { useAuthContext } from "@/context/useAuthContext"
 import { useRouter } from "next/navigation"
-import { useJournalContext } from "@/app/context/JournalContext"
+import { useJournalContext } from "@/context/JournalContext"
 
 
 export default function JournalNavbar() {

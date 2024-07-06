@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import '@radix-ui/themes/styles.css';
 import { Theme,ThemePanel  } from '@radix-ui/themes';
 import "./globals.css";
-import { AuthProvider } from './context/useAuthContext';
+import { AuthProvider } from '../context/useAuthContext';
 
 
 const inter = Inter({ subsets: ["latin"] });

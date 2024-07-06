@@ -1,6 +1,6 @@
 "use client";
-import { useAuthContext } from "@/app/context/useAuthContext";
-import { useUserContext } from "@/app/context/UserContext";
+import { useAuthContext } from "@/context/useAuthContext";
+import { useUserContext } from "@/context/UserContext";
 import { Input } from "@/components/ui/input";
 import createAxiosInstance from "@/lib/CustomAxios";
 import { ENDPOINTS } from "@/lib/utils";

@@ -1,5 +1,5 @@
 "use client";
-import { useJournalContext } from "@/app/context/JournalContext";
+import { useJournalContext } from "@/context/JournalContext";
 import { Input } from "@/components/ui/input";
 
 

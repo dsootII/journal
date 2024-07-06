@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { useJournalContext } from "@/app/context/JournalContext";
+import { useJournalContext } from "@/context/JournalContext";
 import { Input } from "@/components/ui/input";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@radix-ui/themes";

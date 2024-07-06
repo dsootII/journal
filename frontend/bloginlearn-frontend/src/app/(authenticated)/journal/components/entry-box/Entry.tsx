@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import InputBox from "./InputBox";
 import ToolBar from "./ToolBar";
-import { useJournalContext } from "@/app/context/JournalContext";
+import { useJournalContext } from "@/context/JournalContext";
 import { useEffect, useRef, useState } from "react";
 import { ENDPOINTS } from "@/lib/utils";
 import { useRouter } from "next/navigation";

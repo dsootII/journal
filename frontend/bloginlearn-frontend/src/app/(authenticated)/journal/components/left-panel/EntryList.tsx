@@ -11,7 +11,7 @@ import { DropdownMenu } from "@radix-ui/react-dropdown-menu"
 import { DropdownMenuDemo } from "./ContainerDropdown"
 import { SetStateAction } from "react";
 import { Dispatch } from "react";
-import { useJournalContext } from "@/app/context/JournalContext";
+import { useJournalContext } from "@/context/JournalContext";
 
 interface EntryListProps {
   setSelectedContainer: Dispatch<SetStateAction<number>>,

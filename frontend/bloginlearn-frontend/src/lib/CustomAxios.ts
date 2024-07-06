@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { BACKEND_URL } from './utils';
-import { useAuthContext } from '@/app/context/useAuthContext';
+import { useAuthContext } from '@/context/useAuthContext';
 
 
 const createAxiosInstance = () =>{
