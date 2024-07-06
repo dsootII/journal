@@ -6,6 +6,7 @@ import axios from 'axios';
 import { BACKEND_URL, ENDPOINTS } from '@/lib/utils';
 import axiosInstance from '@/lib/CustomAxios';
 import createAxiosInstance from '@/lib/CustomAxios';
+import Entry from '../(authenticated)/journal/components/entry-box/Entry';
 
 //define the types
 interface JournalContextValues {
@@ -17,7 +18,9 @@ interface JournalContextValues {
   setCurrentThought: Dispatch<SetStateAction<string>>;
   currentThoughtTitle: string;
   setCurrentThoughtTitle: Dispatch<SetStateAction<string>>;
-  setListUpdated: Dispatch<SetStateAction<boolean>>
+  setListUpdated: Dispatch<SetStateAction<boolean>>;
+  selectedEntry: Entry;
+  setSelectedEntry: Dispatch<SetStateAction<Entry>>
 }
 
 const defaultContainerValue: Container = {
@@ -25,6 +28,16 @@ const defaultContainerValue: Container = {
   name: "Default Container",
   entries: []
 }
+
+const defaultEntry = {
+  id: 0,
+  title: '',
+  body: '',
+  created_at: '',
+  updated_at: '',
+  user: 0,
+  container: 0,
+};
 
 
 //create journal context
@@ -37,7 +50,9 @@ const JournalContext = createContext<JournalContextValues>({
   setCurrentThought: () => {},
   currentThoughtTitle: '',
   setCurrentThoughtTitle: () => {},
-  setListUpdated: () => {}
+  setListUpdated: () => {},
+  selectedEntry: defaultEntry,
+  setSelectedEntry: () => {}
 });
 
 //create JournalContext component, which will return the provider component,
@@ -46,33 +61,29 @@ const JournalContext = createContext<JournalContextValues>({
 export const JournalProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [containerList, setContainerList] = useState<Containers>([]);
+  const [containerList, setContainerList] = useState<Containers>([defaultContainerValue]);
   const [selectedContainer, setSelectedContainer] = useState(0);
-  const { isAuthenticated, accessToken } = useAuthContext();
+  // const { isAuthenticated, accessToken } = useAuthContext();
   const [currentThought, setCurrentThought] = useState('');
   const [currentThoughtTitle, setCurrentThoughtTitle] = useState('');
   const [listUpdated, setListUpdated] = useState(false);
+  const [selectedEntry, setSelectedEntry] = useState<Entry>(containerList[0].entries[0]);
 
   useEffect(() => {
     // debugger;
-    // if (!isAuthenticated) {
-    //   alert("You're not logged in");
-    //   router.push('/login');
-    // }
-    debugger;
-    console.log("accessToken being sent to the backend", accessToken);
     const axiosInstance = createAxiosInstance();
-    axiosInstance.get( ENDPOINTS.listContainers)
-    .then(res => {
-      console.log("logging axios response in leftPanel useEffect", res);
-      if (res.data) {
-        setContainerList(res.data);
-        setLoading(false);
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    })
+    axiosInstance.get(ENDPOINTS.listContainers)
+      .then(res => {
+        // console.log("logging axios response in leftPanel useEffect", res);
+        if (res.data) {
+          setContainerList(res.data);
+          setLoading(false);
+
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
     let possible_container = localStorage.getItem("selectedContainer")
     if (possible_container) {
       setSelectedContainer(parseInt(possible_container))
@@ -98,7 +109,9 @@ export const JournalProvider: React.FC<{children: ReactNode}> = ({children}) => 
         setCurrentThought,
         currentThoughtTitle,
         setCurrentThoughtTitle,
-        setListUpdated
+        setListUpdated,
+        selectedEntry,
+        setSelectedEntry
       }}
     >
       {children}

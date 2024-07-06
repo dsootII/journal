@@ -58,7 +58,7 @@ export const DropdownMenuDemo: React.FC<{
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">{children}</Button>
+        <Button variant="outline" className="bg-stone-100 shadow-lg">{children}</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
 

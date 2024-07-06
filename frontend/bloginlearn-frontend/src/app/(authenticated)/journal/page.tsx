@@ -45,13 +45,15 @@ export default function Page() {
 
 function JournalPage() {
   const { loading } = useJournalContext();
-    
+  
+  // h-screen w-screen flex bg-gradient-to-r from-white to-stone-800
+
   return (
 
-    <div className="flex w-screen h-screen bg-stone-100">
+    <div className="h-screen w-screen flex bg-gradient-to-l from-white to-stone-800">
       {
         loading ?
-        <div>Loading, please wait...</div> :
+        <div className="text-white">Loading, please wait...</div> :
         <>
           <div className="w-1/3">
             <LeftPanel />

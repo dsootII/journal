@@ -17,7 +17,7 @@ const ConclusionButtonWithToast = ({open, setOpen, handleThoughtConclusion}: any
   return (
     <Toast.Provider swipeDirection="right" duration={3000}>
       <Button
-        className="inline-flex items-center h-full justify-center bg-black rounded font-medium text-[15px] px-[15px] leading-[35px] hover:bg-green-500 text-violet11 shadow-[0_2px_10px] shadow-blackA4 outline-none hover:bg-mauve3 focus:shadow-[0_0_0_2px] focus:shadow-black"
+        className="inline-flex items-center h-full justify-center bg-black rounded font-medium text-[15px] px-[15px] leading-[35px] hover:bg-green-500"
         onClick={handleThoughtConclusion}
       >
         Conclude

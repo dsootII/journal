@@ -93,8 +93,10 @@ function AccountPage() {
     toggleDeleteEntry(true);
   }
 
+
+
   return (
-    <Flex gap={"3"} direction={'column'}>
+    <Flex className='h-screen bg-gradient-to-t from-stone-600 to-stone-800' gap={"3"} direction={'column'}>
       <Card>
         {
           Object.entries(user).map(
@@ -103,10 +105,10 @@ function AccountPage() {
             )
           )
         }
-      </Card>
+      </Card>   
       <Card>
-        <Button onClick={() => setIsModalOn(true)}>+ Add Container</Button>
-        <Button color='ruby' className='ml-2' onClick={() => toggleDeleteSelectedContainer(true)}>Delete Selected Container</Button>
+        <Button color='jade' onClick={() => setIsModalOn(true)}>+ Add Container</Button>
+        <Button color='red' className='ml-2' onClick={() => toggleDeleteSelectedContainer(true)}>Delete Selected Container</Button>
         <Button color='amber' className='ml-2' onClick={() => router.push('/journal')}>Go back to Journal</Button>
         <Modal
           isModalOn={isModalOn}
@@ -121,7 +123,7 @@ function AccountPage() {
                 <Tabs.Trigger
                   key={container.id}
                   value={container.name}
-                  className="px-2 py-1 rounded-lg mt-2 data-[state=active]:bg-blue-500 data-[state=active]:text-white hover:bg-blue-300 hover:text-white text-gray-500"
+                  className="px-2 py-1 rounded-lg mt-2 data-[state=active]:bg-stone-800 data-[state=active]:text-white hover:bg-stone-500 hover:text-white text-black"
                   onClick={() => {
                     setSelectedContainerTab(container.id)
                     containerNameRef.current = container.name

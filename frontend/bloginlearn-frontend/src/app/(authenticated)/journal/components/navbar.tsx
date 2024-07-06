@@ -36,17 +36,17 @@ export default function JournalNavbar() {
   }
 
   return (
-    <div className="flex w-full justify-end px-3 items-center bg-stone-400">
+    <div className="flex w-full justify-end px-3 items-center bg-gradient-to-l from-stone-700 to-stone-800">
 
       <Button 
-        className="p-2 m-2 hover:shadow-sm" 
+        className="p-2 m-2 hover:shadow-sm bg-stone-200" 
         variant={"outline"} 
         onClick={handleNewNoteCreation}
       >
         Create New Note
       </Button>
       <Button 
-        className="p-2 m-2 hover:shadow-sm" 
+        className="p-2 m-2 hover:shadow-sm bg-stone-200" 
         variant={"outline"}
         onClick={() => router.push('/account')}
       >

@@ -121,6 +121,15 @@ class ContainerDeleteView(generics.DestroyAPIView):
   queryset = Container.objects.all()
   serializer_class = ContainerSerializer
   
+class EditContainerView(APIView):
+    def patch(self, request, pk):
+        container = Container.objects.get(pk=pk)
+        serializer = ContainerSerializer(container, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+  
 class EntryViewSet(viewsets.ModelViewSet):
   queryset = Entry.objects.all()
   serializer_class = EntrySerializer

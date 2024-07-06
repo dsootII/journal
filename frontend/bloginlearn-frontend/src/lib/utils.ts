@@ -10,12 +10,13 @@ export const ENDPOINTS = {
   //user
   signup: "signup/",
   login: "login/",
-  userDetail: "user/", 
+  userDetail: "user/",
   logout: "logout/",
   //containers
   listContainers: "listcontainers/",
   createContainers: "createcontainer/",
   deleteContainer: 'deletecontainer/',
+  editContainer: (pk: number) => `editcontainer/${pk}/`,
   //tokens
   obtainTokens: "token/",
   refreshToken: 'token/refresh/',
